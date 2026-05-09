@@ -12,6 +12,20 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * Job - JPA Entity representing a job listing in the job portal
+ *
+ * This entity stores complete job posting information:
+ * - Basic details: title, description, location, work type (remote/on-site/hybrid)
+ * - Employment details: job type (full-time/part-time/contract), category, experience level
+ * - Compensation: salary range (min/max), currency, payment period
+ * - Requirements and benefits for the position
+ * - Timeline: posting date and application deadline
+ * - Company association: many-to-one relationship with the hiring company
+ * - Audit fields (inherited from BaseEntity): track creation and modifications
+ *
+ * A job is always associated with exactly one company.
+ */
 @Getter
 @Setter
 @Entity
