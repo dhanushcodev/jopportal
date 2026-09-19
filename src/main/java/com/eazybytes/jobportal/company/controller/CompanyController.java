@@ -21,7 +21,7 @@ import java.util.List;
  * All endpoints are protected and require JWT authentication.
  */
 @RestController
-@RequestMapping("api/companies")
+@RequestMapping("/api/companies")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"http://localhost:5173"})
 public class CompanyController {

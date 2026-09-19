@@ -1,6 +1,7 @@
 package com.eazybytes.jobportal.security.util;
 
 import com.eazybytes.jobportal.constants.ApplicationConstants;
+import com.eazybytes.jobportal.entity.JobPortalUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -69,10 +70,10 @@ public class JwtUtil {
     public String generateToken(Authentication authentication) {
 
         // Extract the principal (user) from authentication object
-        User principal = (User) authentication.getPrincipal();
+        JobPortalUser principal = (JobPortalUser) authentication.getPrincipal();
 
         // Extract role from authorities (e.g., "ROLE_USER" -> "USER")
-        String role = principal.getAuthorities()
+        String role = authentication.getAuthorities()
                 .stream()
                 .findFirst()
                 .map(a -> a.getAuthority().replace("ROLE_", ""))
@@ -82,7 +83,8 @@ public class JwtUtil {
         return Jwts.builder()
                 .issuer("job-portal")        // Who issued the token
                 .subject("JWT TOKEN")        // What the token is for
-                .claim("username", principal.getUsername())  // Custom claim: username
+                .claim("username", principal.getName())  // Custom claim: username
+                .claim("email",principal.getEmail())
                 .claim("role", role)        // Custom claim: user's role
                 .issuedAt(new Date())       // When token was created
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))  // Expires in 1 hour

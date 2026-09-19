@@ -12,7 +12,9 @@ public class PathsConfig {
     public List<String> publicPaths() {
         return List.of(
                 "/api/contact",
-                "/api/login"
+                "/api/auth/login",
+                "/api/auth/register",
+                "/api/csrf-token"
         );
     }
 

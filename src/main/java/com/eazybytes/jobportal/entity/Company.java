@@ -3,6 +3,7 @@ package com.eazybytes.jobportal.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class Company extends BaseEntity {
     // cascade = CascadeType.ALL: when a company is deleted, all its jobs are deleted
     // orphanRemoval = true: jobs with no company are automatically deleted
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 10)
     private List<Job> jobs = new ArrayList<>();
 
 }

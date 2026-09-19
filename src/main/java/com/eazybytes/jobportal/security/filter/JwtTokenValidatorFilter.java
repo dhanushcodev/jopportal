@@ -7,10 +7,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,6 +40,8 @@ import java.util.List;
  * - If token is invalid: throws BadCredentialsException
  * - If no token provided: request proceeds to next filter (may be denied later if route requires auth)
  */
+@Component
+@RequiredArgsConstructor
 public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
     // Used to match request paths against configured public paths (supports wildcards like /api/**)
@@ -47,17 +51,6 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
     // List of paths that don't require JWT authentication
     private final List<String> publicPaths;
 
-
-    /**
-     * Constructor for JwtTokenValidatorFilter
-     *
-     * @param jwtUtil Utility for JWT token operations
-     * @param publicPaths Paths that don't require authentication
-     */
-    public JwtTokenValidatorFilter(JwtUtil jwtUtil, List<String> publicPaths) {
-        this.jwtUtil = jwtUtil;
-        this.publicPaths = publicPaths;
-    }
 
     /**
      * Main filter method that validates JWT tokens on each request
@@ -99,6 +92,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                     // First parameter: username (principal)
                     // Second parameter: null (no credentials needed for JWT)
                     // Third parameter: authorities/roles
+                    // This indirectly set the authentication true
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
                                     username, null, authorities);
