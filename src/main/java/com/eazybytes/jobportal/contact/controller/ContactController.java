@@ -3,12 +3,15 @@ package com.eazybytes.jobportal.contact.controller;
 import com.eazybytes.jobportal.contact.service.IContactService;
 import com.eazybytes.jobportal.dto.ContactDto;
 
+import com.eazybytes.jobportal.dto.ContactResponseDto;
 import com.eazybytes.jobportal.entity.Contact;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/contact")
@@ -32,5 +35,11 @@ public class ContactController {
         }else  {
             throw new RuntimeException("Failed to save contact");
         }
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<ContactResponseDto>> fetchOpenContactMsgs(){
+        List<ContactResponseDto> contactResponseDtoList = contactService.fetchNewContactMsgs();
+        return new ResponseEntity<>(contactResponseDtoList, HttpStatus.OK);
     }
 }

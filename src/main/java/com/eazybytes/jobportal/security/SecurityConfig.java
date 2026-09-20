@@ -96,6 +96,7 @@
                             privatePaths.forEach(path -> requests.requestMatchers(path).authenticated());
                             // Require ADMIN role for admin paths
                             adminPaths.forEach(path -> requests.requestMatchers(path).hasRole("ADMIN"));
+                            // hasrole() explicitly adds ROLE prefix
                             // Require authentication for all other requests not explicitly listed above
                             requests.anyRequest().authenticated();
                         }
