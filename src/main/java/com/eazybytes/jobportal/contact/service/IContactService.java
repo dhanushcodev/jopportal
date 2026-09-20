@@ -11,5 +11,7 @@ public interface IContactService {
     Contact saveContactDetails(ContactDto contactDto);
     List<ContactResponseDto> fetchNewContactMsgs();
     List<ContactResponseDto> fetchNewContactMsgsWithSort(String sortBy, String sortOrder);
-    Page<ContactResponseDto> fetchNewContactMsgsWithPaginationAndSort(int pageNumber, int pageSize, String sortBy, String sortOrder);
+    Page<ContactResponseDto> fetchNewContactMsgsWithPaginationAndSort(
+            int pageNumber, int pageSize, String sortBy, String sortOrder);
+    boolean closeContactMsg(Long id,String closedMsg);
 }

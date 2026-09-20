@@ -65,4 +65,15 @@ public class ContactController {
         return ResponseEntity.ok(contactResponseDtoList);
     }
 
+    @PatchMapping("/{id}/status/admin")
+    public ResponseEntity<String> updateContactStatus(@PathVariable String id){
+        boolean isUpdated = contactService.closeContactMsg(Long.valueOf(id),"CLOSED");
+        if(isUpdated){
+            return ResponseEntity.ok("Contact has been closed");
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to close contact");
+        }
+    }
+
+
 }

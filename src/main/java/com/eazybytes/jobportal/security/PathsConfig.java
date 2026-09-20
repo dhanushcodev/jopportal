@@ -30,7 +30,8 @@ public class PathsConfig {
         return List.of(
                 "/api/contact/admin",
                 "/api/contact/sort/admin",
-                "/api/contact/page/admin"
+                "/api/contact/page/admin",
+                "/api/contact/{id}/status/admin"
         );
     }
 

@@ -55,6 +55,18 @@ public class ContactServiceImpl implements IContactService {
         return contactPage.map(this::transformToDto);
     }
 
+    @Override
+    public boolean closeContactMsg(Long id, String closedMsg) {
+        Contact contact = contactRepository.findById(id).orElse(null);
+        if(contact == null){
+            return false;
+        }else {
+            contact.setStatus("CLOSED");
+            contactRepository.save(contact);
+            return true;
+        }
+    }
+
     private ContactResponseDto transformToDto(Contact contact){
         return new ContactResponseDto(
                 contact.getId(),contact.getName(), contact.getEmail(), contact.getUserType(), contact.getSubject(),
