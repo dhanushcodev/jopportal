@@ -7,6 +7,9 @@ import com.eazybytes.jobportal.dto.ContactResponseDto;
 import com.eazybytes.jobportal.entity.Contact;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +37,22 @@ public class ContactServiceImpl implements IContactService {
 
     @Override
     public List<ContactResponseDto> fetchNewContactMsgsWithSort(String sortBy, String sortOrder) {
-        Sort sort = sortOrder.equalsIgnoreCase("desc")?Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
+        Sort sort = sortOrder.equalsIgnoreCase("desc")?
+                Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
         List<Contact> contactList = contactRepository.findContactsByStatus("NEW",sort);
         return contactList.stream().map(this::transformToDto).toList();
+    }
+
+    @Override
+    public Page<ContactResponseDto> fetchNewContactMsgsWithPaginationAndSort(
+            int pageNumber, int pageSize, String sortBy, String sortOrder) {
+        //create sort object based on sortBy and sortDir parameters
+        Sort sort = sortOrder.equalsIgnoreCase("desc")?
+                Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
+        //create pageable object with page number, page size, and sorting
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Contact> contactPage = contactRepository.findContactsByStatus("NEW",pageable);
+        return contactPage.map(this::transformToDto);
     }
 
     private ContactResponseDto transformToDto(Contact contact){
