@@ -9,4 +9,5 @@ import java.util.List;
 public interface IContactService {
     Contact saveContactDetails(ContactDto contactDto);
     List<ContactResponseDto> fetchNewContactMsgs();
+    List<ContactResponseDto> fetchNewContactMsgsWithSort(String sortBy, String sortOrder);
 }

@@ -7,12 +7,10 @@ import com.eazybytes.jobportal.dto.ContactResponseDto;
 import com.eazybytes.jobportal.entity.Contact;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ContactServiceImpl implements IContactService {
@@ -31,6 +29,13 @@ public class ContactServiceImpl implements IContactService {
     @Override
     public List<ContactResponseDto> fetchNewContactMsgs() {
         List<Contact> contactList = contactRepository.findContactsByStatus("NEW");
+        return contactList.stream().map(this::transformToDto).toList();
+    }
+
+    @Override
+    public List<ContactResponseDto> fetchNewContactMsgsWithSort(String sortBy, String sortOrder) {
+        Sort sort = sortOrder.equalsIgnoreCase("desc")?Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
+        List<Contact> contactList = contactRepository.findContactsByStatus("NEW",sort);
         return contactList.stream().map(this::transformToDto).toList();
     }
 

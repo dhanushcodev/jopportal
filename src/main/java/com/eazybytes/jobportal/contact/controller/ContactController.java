@@ -42,4 +42,13 @@ public class ContactController {
         List<ContactResponseDto> contactResponseDtoList = contactService.fetchNewContactMsgs();
         return new ResponseEntity<>(contactResponseDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("/sort/admin")
+    public ResponseEntity<List<ContactResponseDto>> fetchNewContactMsgsWithSort(
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ){
+        List<ContactResponseDto> contactResponseDtoList = contactService.fetchNewContactMsgsWithSort(sortBy,sortOrder);
+        return ResponseEntity.ok(contactResponseDtoList);
+    }
 }
